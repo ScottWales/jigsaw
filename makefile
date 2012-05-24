@@ -12,6 +12,7 @@ BINSRC:=$(wildcard $(SRCDIR)/bin/*.c)
 TESTSRC:=$(wildcard $(SRCDIR)/test/*.c)
 BIN=$(patsubst $(SRCDIR)/bin/%.c,$(BINDIR)/%,$(BINSRC))
 TEST=$(patsubst $(SRCDIR)/test/%.c,$(TESTDIR)/%,$(TESTSRC))
+ALLSRC:=$(shell find $(SRCDIR) -name *.c)
 
 #==================================================
 # Where to put it
@@ -24,6 +25,10 @@ TESTDIR=test
 OBJDIR =obj
 LIBDIR =lib
 DOCDIR =doc
+
+# Compiler
+override CFLAGS+=-Wall -Wextra -Werror
+override CPPFLAGS+=-MMD -MP
 
 #==================================================
 # Rules
@@ -44,8 +49,9 @@ check:$(TEST)
 	    fi;\
 	    done;\
 	    exit $$failed
-
-doc:
+doc:doc/html/index.html
+doc/html/index.html:doxygen.cfg $(ALLSRC)
+	doxygen $<
 
 #==================================================
 # Default rules
@@ -63,3 +69,4 @@ $(LIBDIR)/%.a:
 	@mkdir -pv $(dir $@)
 	ar rcs $@ $^
 
+-include $(shell find $(OBJDIR) -name *.d)
