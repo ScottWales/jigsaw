@@ -12,7 +12,7 @@ BINSRC:=$(wildcard $(SRCDIR)/bin/*.c)
 TESTSRC:=$(wildcard $(SRCDIR)/test/*.c)
 BIN=$(patsubst $(SRCDIR)/bin/%.c,$(BINDIR)/%,$(BINSRC))
 TEST=$(patsubst $(SRCDIR)/test/%.c,$(TESTDIR)/%,$(TESTSRC))
-ALLSRC:=$(shell find $(SRCDIR) -name *.c)
+ALLSRC:=$(shell find $(SRCDIR) -name *.[ch])
 
 #==================================================
 # Where to put it
